@@ -93,6 +93,16 @@
         max-width: 62ch;
       }
 
+      .video-help {
+        margin-top: 1rem;
+        font-size: 0.92rem;
+        color: #d7e9ff;
+        padding: 0.8rem 0.95rem;
+        border-radius: 10px;
+        border: 1px dashed rgba(123, 192, 255, 0.45);
+        background: rgba(8, 18, 36, 0.45);
+      }
+
       .stats {
         margin-top: 1.8rem;
         display: grid;
@@ -147,7 +157,7 @@
     <div class="video-stage">
       <video
         id="bgVideo"
-        src="https://cdn.coverr.co/videos/coverr-typing-in-the-dark-8675/1080p.mp4"
+        src="PASTE_YOUR_VIDEO_URL_HERE.mp4"
         muted
         playsinline
         preload="auto"
@@ -164,6 +174,10 @@
             We design adaptive operating systems that shape themselves around the mood,
             focus, and workflow of each team. Scroll the page to scrub our background
             timeline forward and backward, just like our runtime rewires itself in real-time.
+          </p>
+          <p class="video-help">
+            Paste your video URL in the <code>&lt;video id="bgVideo" src="..."&gt;</code>
+            field near the top of this file.
           </p>
           <div class="stats">
             <div class="stat"><strong>24 ms</strong>Average UI mood-shift response.</div>
