@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SyncEtch | Vibe-Coded Operating Systems</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #04070d;
+        --surface: rgba(5, 10, 20, 0.58);
+        --line: rgba(115, 176, 255, 0.35);
+        --text: #f3f8ff;
+        --muted: #b3c8e2;
+        --accent: #7bc0ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 500vh;
+      }
+
+      .video-stage {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        overflow: hidden;
+      }
+
+      .video-stage video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(1.1) contrast(1.1) brightness(0.58);
+      }
+
+      .video-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(circle at 22% 20%, rgba(33, 123, 255, 0.32), transparent 36%),
+          radial-gradient(circle at 76% 18%, rgba(88, 255, 220, 0.2), transparent 34%),
+          linear-gradient(to bottom, rgba(2, 5, 12, 0.48), rgba(2, 4, 10, 0.9));
+      }
+
+      .content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 8vh 6vw 18vh;
+      }
+
+      .hero {
+        min-height: 90vh;
+        display: grid;
+        align-items: center;
+      }
+
+      .panel {
+        background: var(--surface);
+        backdrop-filter: blur(6px);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: clamp(1.2rem, 2.6vw, 2.6rem);
+        box-shadow: 0 24px 60px rgba(0, 8, 24, 0.45);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--accent);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+      }
+
+      h1 {
+        margin: 0.9rem 0;
+        font-size: clamp(2rem, 5vw, 4.5rem);
+        line-height: 1.06;
+      }
+
+      .lead {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 2vw, 1.35rem);
+        max-width: 62ch;
+      }
+
+      .video-help {
+        margin-top: 1rem;
+        font-size: 0.92rem;
+        color: #d7e9ff;
+        padding: 0.8rem 0.95rem;
+        border-radius: 10px;
+        border: 1px dashed rgba(123, 192, 255, 0.45);
+        background: rgba(8, 18, 36, 0.45);
+      }
+
+      .stats {
+        margin-top: 1.8rem;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .stat {
+        padding: 0.95rem;
+        border-radius: 14px;
+        border: 1px solid rgba(123, 192, 255, 0.3);
+        background: rgba(5, 13, 30, 0.5);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.5rem;
+      }
+
+      .stack {
+        margin-top: 38vh;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .stack h2 {
+        margin: 0;
+        font-size: clamp(1.3rem, 2.3vw, 2rem);
+      }
+
+      .stack p {
+        margin: 0.5rem 0 0;
+        color: var(--muted);
+      }
+
+      .scroll-cue {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #d9edff;
+        background: rgba(8, 16, 36, 0.68);
+        border: 1px solid rgba(123, 192, 255, 0.3);
+        border-radius: 999px;
+        padding: 0.6rem 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="video-stage">
+      <video
+        id="bgVideo"
+        src="assets/background.mp4"
+        muted
+        playsinline
+        preload="auto"
+      ></video>
+    </div>
+    <div class="video-overlay" aria-hidden="true"></div>
+
+    <main class="content">
+      <section class="hero">
+        <article class="panel">
+          <p class="eyebrow">SyncEtch</p>
+          <h1>Vibe-coded operating systems, orchestrated by AI.</h1>
+          <p class="lead">
+            We design adaptive operating systems that shape themselves around the mood,
+            focus, and workflow of each team. Scroll the page to scrub our background
+            timeline forward and backward, just like our runtime rewires itself in real-time.
+          </p>
+          <p class="video-help">
+            Videoen loader automatisk ved åbning. Læg din fil som
+            <code>assets/background.mp4</code> for at skifte baggrunden.
+          </p>
+          <div class="stats">
+            <div class="stat"><strong>24 ms</strong>Average UI mood-shift response.</div>
+            <div class="stat"><strong>97%</strong>Signal fidelity across multimodal AI kernels.</div>
+            <div class="stat"><strong>∞</strong>Composable vibe layers for every product team.</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="stack">
+        <article class="panel">
+          <h2>Intent-native Core</h2>
+          <p>Natural language and biometric signals become system-level events.</p>
+        </article>
+        <article class="panel">
+          <h2>Adaptive Shell</h2>
+          <p>Layouts, controls, and tooling remix automatically based on flow-state.</p>
+        </article>
+        <article class="panel">
+          <h2>Guarded Autonomy</h2>
+          <p>AI copilots can execute with confidence while policy boundaries stay explicit.</p>
+        </article>
+      </section>
+    </main>
+
+    <div class="scroll-cue">Scroll to time-scrub</div>
+
+    <script>
+      const video = document.getElementById("bgVideo");
+      let duration = 0;
+      let targetTime = 0;
+      let displayedTime = 0;
+      let ticking = false;
+
+      const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+      const updateTargetFromScroll = () => {
+        if (!duration) return;
+
+        const maxScroll = Math.max(document.body.scrollHeight - window.innerHeight, 1);
+        const progress = clamp(window.scrollY / maxScroll, 0, 1);
+
+        // 2 smoother sweeps: forward then backward.
+        const sweeps = 2;
+        const phase = progress * sweeps;
+        const cycle = Math.floor(phase);
+        const offset = phase - cycle;
+        const direction = cycle % 2 === 0 ? offset : 1 - offset;
+
+        targetTime = direction * duration;
+      };
+
+      const animateVideo = () => {
+        if (!duration) {
+          ticking = false;
+          return;
+        }
+
+        const delta = targetTime - displayedTime;
+        displayedTime += delta * 0.12;
+
+        if (Math.abs(delta) < 0.01) {
+          displayedTime = targetTime;
+        }
+
+        video.currentTime = displayedTime;
+
+        if (Math.abs(targetTime - displayedTime) > 0.001) {
+          requestAnimationFrame(animateVideo);
+        } else {
+          ticking = false;
+        }
+      };
+
+      video.addEventListener("loadedmetadata", () => {
+        duration = video.duration || 0;
+        video.pause();
+        updateTargetFromScroll();
+        displayedTime = targetTime;
+        video.currentTime = displayedTime;
+      });
+
+      document.addEventListener(
+        "scroll",
+        () => {
+          updateTargetFromScroll();
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(animateVideo);
+          }
+        },
+        { passive: true }
+      );
+    </script>
+  </body>
+</html>
