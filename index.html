@@ -103,6 +103,27 @@
         background: rgba(8, 18, 36, 0.45);
       }
 
+      .video-picker {
+        margin-top: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 0.9rem;
+        color: #d7e9ff;
+        flex-wrap: wrap;
+      }
+
+      .video-picker input[type="file"] {
+        max-width: 100%;
+        color: #d7e9ff;
+      }
+
+      .video-picker-note {
+        margin: 0;
+        font-size: 0.82rem;
+        color: #b7cde8;
+      }
+
       .stats {
         margin-top: 1.8rem;
         display: grid;
@@ -157,7 +178,7 @@
     <div class="video-stage">
       <video
         id="bgVideo"
-        src="https://ia600303.us.archive.org/24/items/youtube-xvFZjo5PgG0/xvFZjo5PgG0.mp4"
+        src=""
         muted
         playsinline
         preload="auto"
@@ -176,9 +197,14 @@
             timeline forward and backward, just like our runtime rewires itself in real-time.
           </p>
           <p class="video-help">
-            Paste your video URL in the <code>&lt;video id="bgVideo" src="..."&gt;</code>
-            field near the top of this file.
+            Har du en videofil på din PC? Vælg den herunder — så bruges den direkte som
+            baggrund.
           </p>
+          <label class="video-picker" for="videoFileInput">
+            <span>Vælg videofil:</span>
+            <input id="videoFileInput" type="file" accept="video/*" />
+          </label>
+          <p class="video-picker-note">Tip: MP4 virker oftest bedst i browseren.</p>
           <div class="stats">
             <div class="stat"><strong>24 ms</strong>Average UI mood-shift response.</div>
             <div class="stat"><strong>97%</strong>Signal fidelity across multimodal AI kernels.</div>
@@ -207,7 +233,9 @@
 
     <script>
       const video = document.getElementById("bgVideo");
+      const videoFileInput = document.getElementById("videoFileInput");
       let duration = 0;
+      let objectUrl = null;
 
       const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -231,6 +259,19 @@
         duration = video.duration || 0;
         video.pause();
         scrubVideo();
+      });
+
+      videoFileInput.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        if (objectUrl) {
+          URL.revokeObjectURL(objectUrl);
+        }
+
+        objectUrl = URL.createObjectURL(file);
+        video.src = objectUrl;
+        video.load();
       });
 
       document.addEventListener("scroll", () => {
