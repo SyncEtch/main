@@ -103,27 +103,6 @@
         background: rgba(8, 18, 36, 0.45);
       }
 
-      .video-picker {
-        margin-top: 0.85rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        font-size: 0.9rem;
-        color: #d7e9ff;
-        flex-wrap: wrap;
-      }
-
-      .video-picker input[type="file"] {
-        max-width: 100%;
-        color: #d7e9ff;
-      }
-
-      .video-picker-note {
-        margin: 0;
-        font-size: 0.82rem;
-        color: #b7cde8;
-      }
-
       .stats {
         margin-top: 1.8rem;
         display: grid;
@@ -178,7 +157,7 @@
     <div class="video-stage">
       <video
         id="bgVideo"
-        src=""
+        src="assets/background.mp4"
         muted
         playsinline
         preload="auto"
@@ -197,14 +176,9 @@
             timeline forward and backward, just like our runtime rewires itself in real-time.
           </p>
           <p class="video-help">
-            Har du en videofil på din PC? Vælg den herunder — så bruges den direkte som
-            baggrund.
+            Videoen loader automatisk ved åbning. Læg din fil som
+            <code>assets/background.mp4</code> for at skifte baggrunden.
           </p>
-          <label class="video-picker" for="videoFileInput">
-            <span>Vælg videofil:</span>
-            <input id="videoFileInput" type="file" accept="video/*" />
-          </label>
-          <p class="video-picker-note">Tip: MP4 virker oftest bedst i browseren.</p>
           <div class="stats">
             <div class="stat"><strong>24 ms</strong>Average UI mood-shift response.</div>
             <div class="stat"><strong>97%</strong>Signal fidelity across multimodal AI kernels.</div>
@@ -233,50 +207,70 @@
 
     <script>
       const video = document.getElementById("bgVideo");
-      const videoFileInput = document.getElementById("videoFileInput");
       let duration = 0;
-      let objectUrl = null;
+      let targetTime = 0;
+      let displayedTime = 0;
+      let ticking = false;
 
       const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-      const scrubVideo = () => {
+      const updateTargetFromScroll = () => {
         if (!duration) return;
 
         const maxScroll = Math.max(document.body.scrollHeight - window.innerHeight, 1);
         const progress = clamp(window.scrollY / maxScroll, 0, 1);
 
-        // 4 full sweeps as we move down the page: forward, backward, forward, backward.
-        const sweeps = 4;
+        // 2 smoother sweeps: forward then backward.
+        const sweeps = 2;
         const phase = progress * sweeps;
         const cycle = Math.floor(phase);
         const offset = phase - cycle;
         const direction = cycle % 2 === 0 ? offset : 1 - offset;
 
-        video.currentTime = direction * duration;
+        targetTime = direction * duration;
+      };
+
+      const animateVideo = () => {
+        if (!duration) {
+          ticking = false;
+          return;
+        }
+
+        const delta = targetTime - displayedTime;
+        displayedTime += delta * 0.12;
+
+        if (Math.abs(delta) < 0.01) {
+          displayedTime = targetTime;
+        }
+
+        video.currentTime = displayedTime;
+
+        if (Math.abs(targetTime - displayedTime) > 0.001) {
+          requestAnimationFrame(animateVideo);
+        } else {
+          ticking = false;
+        }
       };
 
       video.addEventListener("loadedmetadata", () => {
         duration = video.duration || 0;
         video.pause();
-        scrubVideo();
+        updateTargetFromScroll();
+        displayedTime = targetTime;
+        video.currentTime = displayedTime;
       });
 
-      videoFileInput.addEventListener("change", (event) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-
-        if (objectUrl) {
-          URL.revokeObjectURL(objectUrl);
-        }
-
-        objectUrl = URL.createObjectURL(file);
-        video.src = objectUrl;
-        video.load();
-      });
-
-      document.addEventListener("scroll", () => {
-        window.requestAnimationFrame(scrubVideo);
-      });
+      document.addEventListener(
+        "scroll",
+        () => {
+          updateTargetFromScroll();
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(animateVideo);
+          }
+        },
+        { passive: true }
+      );
     </script>
   </body>
 </html>
